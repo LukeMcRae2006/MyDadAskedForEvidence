@@ -14,15 +14,16 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
-        moveInput = PlayerController.Instance.moveInput;
 
     }
 
-    private void Update()
+   
+
+    public void Move(Vector2 moveInput)
     {
         // Get movement input
-        float x = Input.GetAxisRaw("Horizontal");
-        float z = Input.GetAxisRaw("Vertical");
+        float x = moveInput.x;
+        float z = moveInput.y;
 
         Vector3 move = transform.right * x + transform.forward * z;
         move = Vector3.ClampMagnitude(move, 1f);

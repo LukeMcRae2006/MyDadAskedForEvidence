@@ -5,8 +5,13 @@ public class PlayerController : MonoBehaviour
 {
 
     [Header("Inputs")]
-    public PlayerInputActions inputActions;
+ 
     public InputActionReference moveInput, lookInput;
+
+    [Header("References")]
+    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private PlayerLook playerLook;
+    [SerializeField] private PlayerInput playerInput;
 
     public static PlayerController Instance { get; private set; }
 
@@ -21,33 +26,30 @@ public class PlayerController : MonoBehaviour
             Instance = this;
         }
 
-        //Intialize input actions
-        inputActions = new PlayerInputActions();
 
 
     }
 
-    private void OnEnable()
-    {
-        //enable input actions
-        inputActions.Player.Enable();
-        
-    }
+  
 
-    private void OnDisable()
-    {
-        //disable input actions
-        inputActions.Player.Disable();
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+
 
     // Update is called once per frame
     void Update()
     {
-        
+        HandleMovement();
+        HandleLook();
+    }
+
+    private void HandleMovement()
+    {
+       
+        playerMovement.Move(moveInput.action.ReadValue<Vector2>());
+    }
+
+    private void HandleLook()
+    {
+       
+        playerLook.Look(lookInput.action.ReadValue<Vector2>());
     }
 }
