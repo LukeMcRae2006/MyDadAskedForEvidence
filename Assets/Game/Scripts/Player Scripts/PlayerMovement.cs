@@ -3,35 +3,42 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Movement")]    
-    public float moveSpeed;
-    
-    [Header("References")] 
-        [SerializeField] private Rigidbody rb;
-    private Vector2 moveInput;
-    private PlayerInput playerInput;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public float moveSpeed = 5f;
+    public float gravity = -9.81f;
+
+    private CharacterController controller;
+    private Vector3 velocity;
+
+    private InputActionReference moveInput;
+
+    private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        playerInput = new PlayerInput();
+        controller = GetComponent<CharacterController>();
+        moveInput = PlayerController.Instance.moveInput;
+
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
-    }
+        // Get movement input
+        float x = Input.GetAxisRaw("Horizontal");
+        float z = Input.GetAxisRaw("Vertical");
 
-    void MovePlayer()
-    {
-        
-    }
-    
-    
-    void OnMove(InputAction.CallbackContext context)
-    {
-        moveInput = context.ReadValue<Vector2>();
+        Vector3 move = transform.right * x + transform.forward * z;
+        move = Vector3.ClampMagnitude(move, 1f);
+
+        // Apply horizontal movement
+        controller.Move(move * moveSpeed * Time.deltaTime);
+
+        // Apply gravity
+        if (controller.isGrounded && velocity.y < 0f)
+        {
+            velocity.y = -2f;
+        }
+
+        velocity.y += gravity * Time.deltaTime;
+
+        // Apply vertical movement
+        controller.Move(velocity * Time.deltaTime);
     }
 }
