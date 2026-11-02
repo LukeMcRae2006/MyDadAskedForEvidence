@@ -6,12 +6,14 @@ public class PlayerController : MonoBehaviour
 
     [Header("Inputs")]
  
-    public InputActionReference moveInput, lookInput;
+    public InputActionReference moveInput, lookInput, aimInput;
 
-    [Header("References")]
+    [Header("Script References")]
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private PlayerLook playerLook;
     [SerializeField] private PlayerInput playerInput;
+    [Header("Right Hand References")]
+    [SerializeField] private Animator rightHandAnim;
 
     public static PlayerController Instance { get; private set; }
 
@@ -39,7 +41,22 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovement();
         HandleLook();
+        AimCamera();
     }
+
+
+
+    // RIGHT HAND
+    private void AimCamera()
+    {
+        
+
+        rightHandAnim.SetBool("isAiming", aimInput.action.IsPressed());
+
+
+    }
+
+
 
     private void HandleMovement()
     {
