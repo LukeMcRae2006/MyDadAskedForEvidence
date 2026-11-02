@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
 
     public static PlayerController Instance { get; private set; }
     public PlayerState playerState;
+    private PlayerState previousPlayerState;
 
     private void Awake()
     {
@@ -84,13 +85,17 @@ public class PlayerController : MonoBehaviour
         HandleCamera();
     }
 
-    void Editing()
+    public void ChangePlayerState(PlayerState newState)
     {
-        if(editInput.action.WasPressedThisFrame())
-        {
-            playerState = PlayerState.Active;
-        }
+        previousPlayerState = playerState;
+        playerState = newState;
     }
+
+    public void GoBackToPreviousState()
+    {
+        playerState = previousPlayerState;
+    }
+
 
 
 
@@ -104,16 +109,37 @@ public class PlayerController : MonoBehaviour
         //lerp field of view of fps Cam if player is aiming the camera
         fpsCam.Lens.FieldOfView = Mathf.Lerp(fpsCam.Lens.FieldOfView, isAimingCamera ? 45f : 60f, Time.deltaTime * 5f);
 
+        //handle taking photo if player is aiming and presses the capture input
         if (isAimingCamera && captureInput.action.WasPressedThisFrame())
         {
             cameraController.TakePhoto();
 
         }
 
+        //Handle entering editing if action is pressed
         if(isAimingCamera && editInput.action.WasPressedThisFrame())
         {
-            playerState = PlayerState.Editing;
+            ChangePlayerState(PlayerState.Editing);
+            cameraController.EnterEditMode();
+            
+
         }
+
+       
+
+
+    }
+
+
+    //Handle exiting editing mode
+    void Editing()
+    {
+
+        if (editInput.action.WasPressedThisFrame())
+        {
+            cameraController.EnterEditMode();
+        }
+
 
     }
     #endregion
