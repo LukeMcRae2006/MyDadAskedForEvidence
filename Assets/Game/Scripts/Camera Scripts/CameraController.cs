@@ -168,6 +168,8 @@ public class CameraController : MonoBehaviour
             texture.LoadImage(imageBytes);
 
             photoToEdit.texture = texture;
+
+          
            
 
         }
@@ -261,6 +263,12 @@ public class CameraController : MonoBehaviour
                 File.Delete(photos[currentPhotoIndex]);
                 Debug.Log("Deleted photo: " + photos[currentPhotoIndex]);
                 // Refresh the photo list
+
+                //decrease photo index so next photo shows up
+                if (currentPhotoIndex > 0)
+                {
+                    currentPhotoIndex -= 1;
+                }
                 GetPhotoToEdit();
             }
         }

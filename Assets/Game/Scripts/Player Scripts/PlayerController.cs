@@ -24,6 +24,9 @@ public class PlayerController : MonoBehaviour
     [Header("Camera Attributes & Properties")]
     public bool isAimingCamera;
 
+    [Header("Player Interaction")]
+    [SerializeField] private PlayerInteraction playerInteraction;
+
     public static PlayerController Instance { get; private set; }
     public PlayerState playerState;
     private PlayerState previousPlayerState;
@@ -125,7 +128,11 @@ public class PlayerController : MonoBehaviour
 
         }
 
-       
+        //handle interaction, cannot interact if player is aiming the camera
+        playerInteraction.enabled = !isAimingCamera;
+
+
+
 
 
     }
