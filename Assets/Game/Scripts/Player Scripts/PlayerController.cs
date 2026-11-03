@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour
         //handle taking photo if player is aiming and presses the capture input
         if (isAimingCamera && captureInput.action.WasPressedThisFrame())
         {
-            cameraController.TakePhoto();
+            StartCoroutine(cameraController.TakePhoto());
 
         }
 
