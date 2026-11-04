@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     [Header("Player Interaction")]
     [SerializeField] private PlayerInteraction playerInteraction;
 
+
     public static PlayerController Instance { get; private set; }
     public PlayerState playerState;
     private PlayerState previousPlayerState;

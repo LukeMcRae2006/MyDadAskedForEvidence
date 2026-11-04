@@ -21,6 +21,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private Rigidbody playersHandRB;
     private GameObject doorObject;
     [SerializeField] private SpringJoint doorJoint;
+    private Vector3 interactionPoint;
 
     public enum InteractionState
     {
@@ -65,20 +66,30 @@ public class PlayerInteraction : MonoBehaviour
 
     private void InteractingWithDoor()
     {
-       //if there is a door and we want to interact then the hand will connect to it
         if (doorObject != null)
         {
-            //create joint on door if not there
-            doorJoint.connectedBody = doorObject.GetComponent<Rigidbody>();
-            
-        }
+            Rigidbody doorRB = doorObject.GetComponent<Rigidbody>();
 
+            if (doorJoint.connectedBody == null)
+            {
+                doorJoint.connectedBody = doorRB;
+
+                // Connect to the exact point we grabbed
+                doorJoint.autoConfigureConnectedAnchor = false;
+
+                doorJoint.connectedAnchor =
+                    doorRB.transform.InverseTransformPoint(interactionPoint);
+
+                doorJoint.anchor =
+                    doorJoint.transform.InverseTransformPoint(interactionPoint);
+            }
+        }
 
         if (interactInput.action.WasReleasedThisFrame())
         {
-           //we no longer want to interact so erase connections
-            doorJoint.connectedBody = null; 
+            doorJoint.connectedBody = null;
             doorObject = null;
+
             currentInteractionState = InteractionState.None;
         }
     }
@@ -97,6 +108,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             interactCrosshair.enabled = true;
             doorObject = hit.transform.gameObject;
+            interactionPoint = hit.point;
             Debug.Log("Hit object: " + hit.transform.name);
 
             //Draw a temporary debug line in the Scene view
