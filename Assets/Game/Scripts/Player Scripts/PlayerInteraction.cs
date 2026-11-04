@@ -22,6 +22,11 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject doorObject;
     [SerializeField] private SpringJoint doorJoint;
     private Vector3 interactionPoint;
+    [SerializeField] private float maxDoorInteractionDistance = 5f;
+    public float distanceFromDoor = 0;
+
+    [Header("Animations")]
+    [SerializeField] private Animator handAnim;
 
     public enum InteractionState
     {
@@ -72,6 +77,7 @@ public class PlayerInteraction : MonoBehaviour
 
             if (doorJoint.connectedBody == null)
             {
+                handAnim.SetBool("isHoldingDoor", true);
                 doorJoint.connectedBody = doorRB;
 
                 // Connect to the exact point we grabbed
@@ -83,13 +89,23 @@ public class PlayerInteraction : MonoBehaviour
                 doorJoint.anchor =
                     doorJoint.transform.InverseTransformPoint(interactionPoint);
             }
+            //grab distance of player from door
+            distanceFromDoor = Vector3.Distance(doorObject.transform.position, transform.position);
+        }
+        else
+        {
+            distanceFromDoor = 0f;
         }
 
-        if (interactInput.action.WasReleasedThisFrame())
+
+
+        //check if player wants to exit door interaction or if they are too far away
+
+        if (interactInput.action.WasReleasedThisFrame() || distanceFromDoor > maxDoorInteractionDistance)
         {
             doorJoint.connectedBody = null;
             doorObject = null;
-
+            handAnim.SetBool("isHoldingDoor", false);
             currentInteractionState = InteractionState.None;
         }
     }
@@ -107,7 +123,7 @@ public class PlayerInteraction : MonoBehaviour
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, interactRange, doorLayer))
         {
             interactCrosshair.enabled = true;
-            doorObject = hit.transform.gameObject;
+            
             interactionPoint = hit.point;
             Debug.Log("Hit object: " + hit.transform.name);
 
@@ -116,7 +132,8 @@ public class PlayerInteraction : MonoBehaviour
             
             if(interactInput.action.WasPressedThisFrame())
             {
-               currentInteractionState = InteractionState.InteractingWithDoor;    
+                doorObject = hit.transform.gameObject;
+                currentInteractionState = InteractionState.InteractingWithDoor;    
             }   
 
 
@@ -124,7 +141,7 @@ public class PlayerInteraction : MonoBehaviour
         }
         else
         {
-            doorObject = null;
+           
             interactCrosshair.enabled = false;
         }
     }
