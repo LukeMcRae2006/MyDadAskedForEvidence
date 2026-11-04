@@ -2942,7 +2942,7 @@ SpringJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
-  m_Spring: 20
+  m_Spring: 100
   m_Damper: 1
   m_MinDistance: 0
   m_MaxDistance: 0
