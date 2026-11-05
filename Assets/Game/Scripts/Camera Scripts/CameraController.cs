@@ -8,14 +8,18 @@ using System;
 public class CameraController : MonoBehaviour
 {
     [Header("Player Camera Input")]
-    [SerializeField] private InputActionReference interactInput, BackInput, nextPhotoInput, prevPhotoInput;
+    [SerializeField] private InputActionReference interactInput, BackInput, nextPhotoInput, prevPhotoInput, zoomInput;
     [Header("Taking Photos")]
     private Texture2D photo;
     [SerializeField] private Camera photoCamera;
     [SerializeField] private RenderTexture photoTexture;
     [SerializeField] private RawImage recentlyTakenPhoto;
     [SerializeField] private GameObject cameraFlash;
-    
+    private float zoomLevel = 60f; // Default zoom level
+    [SerializeField] private float maxZoomLevel, minZoomLevel;
+    private float timeBtwPhotos;
+    [SerializeField] private float timeBtwPhotosSetter;
+
 
     [Header("Editing Mode")]
     //actionUI is the UI to delete photos, editingUI is the UI to view photos in the editor
@@ -53,11 +57,23 @@ public class CameraController : MonoBehaviour
                 Deletion();
                 break;
         }
+
+        if(timeBtwPhotos > 0)
+        {
+            timeBtwPhotos -= Time.deltaTime;
+        }
     }
 
     #region Capturing Photos
     public IEnumerator TakePhoto()
     {
+        if(GetCurrentPhotoCount() >= 5 && timeBtwPhotos <= 0)
+        {
+            Debug.Log("Photo Limit Reached, please delete photos to take more");
+            yield break; // Exit the coroutine if the photo limit is reached
+          
+        }
+
         cameraFlash.SetActive(true);
         yield return new WaitForSeconds(0.25f); // Wait for the flash effect to be visible  
 
@@ -114,7 +130,8 @@ public class CameraController : MonoBehaviour
         // Destroy the texture after we're done using it
         Destroy(photo);
 
-
+        //set timer back to setter for photo delay
+        timeBtwPhotos = timeBtwPhotosSetter;
 
         Debug.Log("Photo saved to: " + path);
     }
@@ -183,6 +200,23 @@ public class CameraController : MonoBehaviour
 
     }
 
+    public int GetCurrentPhotoCount()
+    {
+        string photoFolder = Path.Combine(
+           Application.persistentDataPath,
+           "Photos"
+       );
+
+        //Directory error handler
+        if (!Directory.Exists(photoFolder))
+            return 0;
+
+        // Get all saved PNG photos
+        photos = Directory.GetFiles(photoFolder, "Evidence_*.png");
+
+        return photos.Length;
+    }
+
     public void IncreaseCurrentPhotoIndex()
     {
         if (currentPhotoIndex < photos.Length-1)
@@ -215,7 +249,15 @@ public class CameraController : MonoBehaviour
     {
         // Logic for capturing photos
         editingUI.SetActive(false);
-        
+        //check if the player is aiming the camera
+        if(PlayerController.Instance.isAimingCamera)
+        {
+            //check if the player wants to zoom in or out
+            zoomLevel = Mathf.Clamp(zoomLevel, minZoomLevel, maxZoomLevel) + -zoomInput.action.ReadValue<Vector2>().y * 5f;
+            photoCamera.fieldOfView = zoomLevel;
+
+        }
+
     }
 
     private void Editing()
