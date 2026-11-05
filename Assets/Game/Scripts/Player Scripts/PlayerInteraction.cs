@@ -7,7 +7,7 @@ public class PlayerInteraction : MonoBehaviour
 
     [SerializeField] private Camera fpsCam;
     private bool isInteracting = false;
-    [SerializeField] private LayerMask doorLayer;
+    [SerializeField] private LayerMask doorLayer, interactLayer;
     [SerializeField] private float interactRange =5f;
     [SerializeField] private InputActionReference interactInput;
 
@@ -31,7 +31,8 @@ public class PlayerInteraction : MonoBehaviour
     public enum InteractionState
     {
         None,
-        InteractingWithDoor
+        InteractingWithDoor,
+        Interacting
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -139,9 +140,17 @@ public class PlayerInteraction : MonoBehaviour
 
 
         }
+        else if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, interactRange, interactLayer))
+        {
+            interactCrosshair.enabled = true;
+            if (interactInput.action.WasPressedThisFrame())
+            {
+               hit.transform.GetComponent<IInteractable>().Interact();
+            }
+        }
         else
         {
-           
+
             interactCrosshair.enabled = false;
         }
     }

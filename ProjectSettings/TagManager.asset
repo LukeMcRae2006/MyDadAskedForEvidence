@@ -15,8 +15,8 @@ TagManager:
   - DoorFrame
   - Ground
   - DoorKnob
-  - 
-  - 
+  - Interactable
+  - Player
   - 
   - 
   - 

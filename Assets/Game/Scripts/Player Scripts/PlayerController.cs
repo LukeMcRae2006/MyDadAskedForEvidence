@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Animator rightHandAnim;
     [Header("Digital Camera References")]
     [SerializeField] private CameraController cameraController;
+    [Header("Bed References")]
+    [SerializeField] private Transform inBedTransform, outOfBedTransform;
 
     [Header("Camera Attributes & Properties")]
     public bool isAimingCamera;
@@ -101,6 +103,28 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    #region Crawling In and Out of Bed
+
+    public void CrawlIntoBed()
+    {
+        ChangePlayerState(PlayerState.Resting);
+        playerMovement.enabled = false;
+        transform.position = inBedTransform.position;
+
+    }
+
+    public void CrawlOutOfBed()
+    {
+        
+       
+        transform.position = outOfBedTransform.position;
+        playerMovement.enabled = true;
+        ChangePlayerState(PlayerState.Active);
+       
+
+    }
+
+    #endregion
 
 
     #region Camera and Hands

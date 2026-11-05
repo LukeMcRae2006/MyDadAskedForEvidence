@@ -17,7 +17,16 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-   
+    private void OnEnable()
+    {
+        controller.enabled = true;
+    }
+
+    private void OnDisable()
+    {
+        controller.enabled = false;
+    }   
+
 
     public void Move(Vector2 moveInput)
     {
