@@ -1,0 +1,24 @@
+
+
+
+
+What: The creature will start off just haunting the player. The creature will have five different places it can haunt the player. From Left to Right there is: The Window, Bed, Closet, Door, and the Vent. At first we will control the
+creatures actions through the timeline. Since one hour is only 6 minutes in real time, the timeline will span 6 minutes and the creature will have set actions.
+However when we reach around the third or second level the creature will have a goal oriented AI that will allow it to make decisions.
+
+Why: The reason why the creature will start off slowly haunting the player is to build tension and suspense but also allow the player to get used to the creature's pressence.
+
+How: We will use the timeline for the first level of the game. After that the creature will have a goal oriented AI.
+
+
+Notes of what makes good AI:
+
+-Good AI Lets the player cheat
+-Good AI Tells you what it's thinking
+-The player should not know what the AI is thinking, but know its goal. To kill the player.
+-However Good AI Is Predictable.
+-Predictable actions but unpredictable consequences
+-GOOD AI CAN INTERACT WITH THE SYSTEMS!! - This is going to be necesary because the creature will interact with the enviroment!
+-The Creature does not want to be seen, it wants to preserve it's identity.
+-Good AI reacts to player: for this game we want the creature to understand the actions the player is taking
+-However this is a short game, so the AI should not be too complex and take too long to implement but the AI is the main fun factor of the game for me.
