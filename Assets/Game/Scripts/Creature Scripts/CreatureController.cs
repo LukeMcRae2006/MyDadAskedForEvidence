@@ -8,8 +8,27 @@ public class CreatureController : MonoBehaviour
     [Header("Animator")]
     [SerializeField] private Animator anim;
     [Header("Creature Positions")]
-    [SerializeField] private Transform[] creaturePositions;
+    [SerializeField] private Transform[] thinkingPositions; // 0 = retreat, 1 = thinking
     [SerializeField] private Transform[] windowPositions, closetPositions, doorPositions, ventPositions;
+    [Header("Creature Actions")]
+    //reference to creatures last choice
+    private CreatureState lastCreatureChoice;
+    [Header("Creature Thinking Attributes")]
+    [SerializeField] private float thinkingDelaySetter, thinkingDelayRetreatSetter;
+    [Range(0, 100)]
+    [SerializeField] private int windowProb, closetProb, doorProb, ventProb; //probs will start based off of the sum of the previous prob(s)
+    private float thinkingDelay = 0;
+    [Header("Creature Approach References")]
+    [SerializeField] private WindowScript windowScript;
+    [SerializeField] private VentScript ventScript;
+    [SerializeField] private DoorScript doorScript;
+    [SerializeField] private ClosetScript closetScript;
+    
+
+
+
+    //Instance
+    public static CreatureController Instance;
 
     public enum CreatureState
     {
@@ -17,14 +36,27 @@ public class CreatureController : MonoBehaviour
         window,
         closet,
         door,
-        vent
+        vent,
+        retreat
 
 
+    }
+
+    void Awake()
+    {
+        if(Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        thinkingDelay = thinkingDelaySetter;
     }
 
     // Update is called once per frame
@@ -33,51 +65,110 @@ public class CreatureController : MonoBehaviour
         switch(creatureState)
         {
             case CreatureState.thinking:
-                transform.position = creaturePositions[0].position;
+                Thinking();
                 break;
             case CreatureState.window:
-                transform.position = creaturePositions[1].position;
+                Window();
                 break;
             case CreatureState.closet:
-                transform.position = creaturePositions[2].position;
+                Closet();
                 break;
             case CreatureState.door:
-                transform.position = creaturePositions[3].position;
+                Door();
                 break;
             case CreatureState.vent:
-                transform.position = creaturePositions[4].position;
+                Vent();
+                break;
+            case CreatureState.retreat:
+                Retreat();
                 break;
         }
     }
 
     void Thinking()
     {
+        transform.position = thinkingPositions[1].position;
+        //check if thinking delay is done.
+        if(thinkingDelay > 0)
+        {
+            thinkingDelay -= Time.deltaTime;
+            return;
+        }
+
+        //now lets check best approaches
+
+        int choice = Random.Range(0, 100);
+        Debug.Log("creature Random Number Generated: " + choice);
+        if (choice <= windowProb)
+        {
+            ChooseCreatureApproachChoice(CreatureState.window);
+        }
+        else if(choice <= closetProb)
+        {
+            ChooseCreatureApproachChoice(CreatureState.closet);
+        }
+        else if (choice <= doorProb)
+        {
+            ChooseCreatureApproachChoice(CreatureState.door);
+        }
+        else
+        {
+            ChooseCreatureApproachChoice(CreatureState.vent);
+        }
+
+      
+      
+
+      
+        
+    }
+
+
+    void ChooseCreatureApproachChoice(CreatureState newState)
+    {
+        creatureState = newState;
+        lastCreatureChoice = creatureState;
+    }
+
+
+    public void CreatureDetected()
+    {
+        //creature is detected! Retreat!
+        thinkingDelay = thinkingDelayRetreatSetter;
+        creatureState = CreatureState.thinking;
 
     }
 
+
     void Window()
     {
-
+        transform.position = windowPositions[0].position;
     }
 
     void Closet()
     {
-
+        transform.position = closetPositions[0].position;
 
     }
 
     void Door()
     {
 
-
+        transform.position = doorPositions[0].position;
     }
 
     void Vent()
     {
-
+        transform.position = ventPositions[0].position;
+        ventScript.Interact();
     }
 
+    void Retreat()
+    {
+        transform.position = thinkingPositions[0].position;
+    }
 
+   
     /*Psuedo Code For Creature Controller
      * Little note, I know it is not the best practice for puting psuedo code at the bottom of the actual code file however I am making this game in a short time and I want to kind of show this code off :D
      * 

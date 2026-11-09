@@ -19,6 +19,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float maxZoomLevel, minZoomLevel;
     private float timeBtwPhotos;
     [SerializeField] private float timeBtwPhotosSetter;
+    [SerializeField] private CameraHitDetection cameraHitDetection;
 
 
     [Header("Editing Mode")]
@@ -112,6 +113,12 @@ public class CameraController : MonoBehaviour
         string path = Path.Combine(photoFolder, fileName);
 
         File.WriteAllBytes(path, imageBytes);
+
+        //Alright now that the photo is taken, tell the creature that we got a photo of him, if the creature is within the sights of the camera
+        if(cameraHitDetection.isCreatureInCamera)
+        {
+            CreatureController.Instance.CreatureDetected();
+        }
 
      
         // Display the captured photo

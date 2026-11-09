@@ -1,13 +1,15 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class RoomManager : MonoBehaviour
 {
-
+    public bool isWindowOpen = false;
     public bool isClosetOpen = false;
-    public bool isWindowOpen = false;   
     public bool isDoorOpen = false;
     public bool isVentOpen = false;
-
+   
+    
 
     public static RoomManager Instance { get; private set; }
 
@@ -24,6 +26,9 @@ public class RoomManager : MonoBehaviour
         {
             Instance = this;
         }
+
+
+
 
 
 

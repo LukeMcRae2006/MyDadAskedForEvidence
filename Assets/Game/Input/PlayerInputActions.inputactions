@@ -178,6 +178,17 @@
                 },
                 {
                     "name": "",
+                    "id": "237d39fa-7bfd-4986-819f-9ee671303bdb",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Capture",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "a8c23bc3-9fed-4ffe-98ee-e72d3d2498a0",
                     "path": "<Keyboard>/e",
                     "interactions": "",
