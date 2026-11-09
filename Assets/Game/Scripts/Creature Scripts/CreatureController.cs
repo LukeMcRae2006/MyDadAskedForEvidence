@@ -76,4 +76,14 @@ public class CreatureController : MonoBehaviour
     {
 
     }
+
+
+    /*Psuedo Code For Creature Controller
+     * Little note, I know it is not the best practice for puting psuedo code at the bottom of the actual code file however I am making this game in a short time and I want to kind of show this code off :D
+     * 
+     * Thinking: Creature will determine the best approach to the player depending on what the player is looking at and the creatures previous approach and possible approaches
+     What does this mean?
+    well the opened approaches will have priority, so if the closet is opened it will try and go there, next priority is the closer aproaches, however creature can not go to the same approach twice in a row
+    
+     */
 }
