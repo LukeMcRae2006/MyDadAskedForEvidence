@@ -9,5 +9,6 @@ public class ClosetScript : MonoBehaviour, IInteractable
     {
         isOpen = !isOpen;
         closetAnimator.SetBool("isOpen", isOpen);
+        RoomManager.Instance.isClosetOpen = isOpen;
     }
 }
