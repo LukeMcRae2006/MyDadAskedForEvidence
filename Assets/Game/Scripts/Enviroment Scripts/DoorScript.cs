@@ -33,6 +33,9 @@ public class DoorScript : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        rb.AddForce(-Vector3.right * 100f, ForceMode.Impulse);
+       
+        rb.AddForce(-Vector3.right * 3f, ForceMode.Impulse);
+        isDoorOpen = true;
+        RoomManager.Instance.isDoorOpen = isDoorOpen;
     }
 }

@@ -12,7 +12,7 @@ public class CreatureController : MonoBehaviour
     [SerializeField] private Transform[] windowPositions, closetPositions, doorPositions, ventPositions;
     [Header("Creature Actions")]
     //reference to creatures last choice
-    private CreatureState lastCreatureChoice;
+    private CreatureState lastCreatureChoice = CreatureState.vent;
     [Header("Creature Thinking Attributes")]
     [SerializeField] private float thinkingDelaySetter, thinkingDelayRetreatSetter;
     [Range(0, 100)]
@@ -126,6 +126,11 @@ public class CreatureController : MonoBehaviour
 
     void ChooseCreatureApproachChoice(CreatureState newState)
     {
+        if(newState == lastCreatureChoice)
+        {
+            creatureState = CreatureState.thinking;
+            return;
+        }
         creatureState = newState;
         lastCreatureChoice = creatureState;
     }
@@ -143,31 +148,51 @@ public class CreatureController : MonoBehaviour
 
     void Window()
     {
+        PlayAnimation("ANI_HauntWindow_1");
         transform.position = windowPositions[0].position;
+        if(RoomManager.Instance.isWindowOpen == false)
+        {
+            windowScript.Interact();
+        }
     }
 
     void Closet()
     {
+        PlayAnimation("ANI_HauntCloset_1");
         transform.position = closetPositions[0].position;
+        if (RoomManager.Instance.isClosetOpen == false)
+        {
+            closetScript.Interact();
+        }
 
     }
 
     void Door()
     {
-
+        PlayAnimation("ANI_HauntDoor_1");
         transform.position = doorPositions[0].position;
-        doorScript.Interact();
+        if (RoomManager.Instance.isDoorOpen == false)
+        {
+            doorScript.Interact();
+        }
     }
 
     void Vent()
     {
+        PlayAnimation("ANI_HauntVent_1");
         transform.position = ventPositions[0].position;
         ventScript.Interact();
     }
 
     void Retreat()
     {
+        PlayAnimation("ANI_Retreat");
         transform.position = thinkingPositions[0].position;
+    }
+
+    void PlayAnimation(string animName)
+    {
+        anim.Play(animName);
     }
 
    
