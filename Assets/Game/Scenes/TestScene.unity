@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.20903048, g: 0.22111465, b: 0.24528301, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 0.74
+  m_AmbientIntensity: 2.09
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
@@ -2864,7 +2864,7 @@ MonoBehaviour:
     m_Bits: 16384
   obstructionMask:
     serializedVersion: 2
-    m_Bits: 2039
+    m_Bits: 256
   playerCanSeeCreature: 0
 --- !u!1 &1640517765
 GameObject:
@@ -3263,6 +3263,7 @@ MonoBehaviour:
   isClosetOpen: 0
   isDoorOpen: 0
   isVentOpen: 0
+  creatureIsBeingSeen: 0
 --- !u!1 &2005912587
 GameObject:
   m_ObjectHideFlags: 0
@@ -3828,7 +3829,7 @@ Transform:
   m_GameObject: {fileID: 919132147614406006}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.16, y: 1.187, z: -5.675}
+  m_LocalPosition: {x: -0.88, y: -1.11, z: -5.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4263,8 +4264,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 4.1708393, z: 1}
-  m_Center: {x: 0, y: 1.9331803, z: 0}
+  m_Size: {x: 2.3353906, y: 4.3692, z: 2.549024}
+  m_Center: {x: -0.01793027, y: 2.0323608, z: 0.023406267}
 --- !u!95 &919132147614406009
 Animator:
   serializedVersion: 7
@@ -4308,16 +4309,24 @@ MonoBehaviour:
   - {fileID: 642443783}
   closetPositions:
   - {fileID: 1103073563}
+  - {fileID: 310652485}
   doorPositions:
   - {fileID: 1086137419}
+  - {fileID: 310652485}
   ventPositions:
   - {fileID: 693526656}
-  thinkingDelaySetter: 5
-  thinkingDelayRetreatSetter: 2
-  windowProb: 25
-  closetProb: 50
-  doorProb: 80
+  windowProgress: 1
+  ventProgress: 1
+  closetProgress: 1
+  doorProgress: 1
+  firstThinkingDelaySetter: 5
+  thinkingDelayRetreatSetter: 10
+  windowProb: 20
+  closetProb: 53
+  doorProb: 85
   ventProb: 100
+  approachDelaySetter: 8
+  approachDelay: 0
   windowScript: {fileID: 7104672601779856541}
   ventScript: {fileID: 6870805100708015981}
   doorScript: {fileID: 9151972441945250091}

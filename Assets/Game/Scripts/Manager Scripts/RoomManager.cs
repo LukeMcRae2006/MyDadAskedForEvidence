@@ -8,7 +8,7 @@ public class RoomManager : MonoBehaviour
     public bool isClosetOpen = false;
     public bool isDoorOpen = false;
     public bool isVentOpen = false;
-   
+    public bool creatureIsBeingSeen = false;
     
 
     public static RoomManager Instance { get; private set; }

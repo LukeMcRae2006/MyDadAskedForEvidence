@@ -41,6 +41,8 @@ public class PlayerLook : MonoBehaviour
 
         // Creature is not visible
         playerCanSeeCreature = false;
+
+
     }
 
 
@@ -62,6 +64,7 @@ public class PlayerLook : MonoBehaviour
     private void Update()
     {
         FindVisibleTargets();
+        RoomManager.Instance.creatureIsBeingSeen = playerCanSeeCreature;
     }
 
     #region Baisc Player Look Controls
