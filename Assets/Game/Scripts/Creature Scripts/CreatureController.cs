@@ -139,6 +139,7 @@ public class CreatureController : MonoBehaviour
 
     }
 
+    
 
     void Window()
     {
@@ -155,6 +156,7 @@ public class CreatureController : MonoBehaviour
     {
 
         transform.position = doorPositions[0].position;
+        doorScript.Interact();
     }
 
     void Vent()

@@ -654,6 +654,37 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1 &310652484
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 310652485}
+  m_Layer: 0
+  m_Name: Bed-Position
+  m_TagString: Untagged
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &310652485
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310652484}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.88, y: -1.11, z: -5.78}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1952663930}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &326961494
 GameObject:
   m_ObjectHideFlags: 0
@@ -3209,6 +3240,7 @@ Transform:
   m_Children:
   - {fileID: 763799496}
   - {fileID: 77624889}
+  - {fileID: 310652485}
   - {fileID: 866799160}
   - {fileID: 1456696494}
   - {fileID: 1940767947}
@@ -9502,6 +9534,7 @@ MonoBehaviour:
   hinge: {fileID: 9151972441945250088}
   snapAngle: 10
   snapForce: 10
+  rb: {fileID: 9151972441945250089}
 --- !u!1 &9218447808117134046
 GameObject:
   m_ObjectHideFlags: 0

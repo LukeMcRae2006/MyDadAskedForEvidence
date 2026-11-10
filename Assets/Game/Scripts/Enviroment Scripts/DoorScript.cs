@@ -1,11 +1,12 @@
 using UnityEngine;
 
-public class DoorScript : MonoBehaviour
+public class DoorScript : MonoBehaviour, IInteractable
 {
     [SerializeField] private HingeJoint hinge;
     [SerializeField] private float snapAngle = 10f;
     [SerializeField] private float snapForce = 10f;
     private bool isDoorOpen = false;
+    [SerializeField] private Rigidbody rb;
 
     private void FixedUpdate()
     {
@@ -28,5 +29,10 @@ public class DoorScript : MonoBehaviour
             
         }
         RoomManager.Instance.isDoorOpen = isDoorOpen;
+    }
+
+    public void Interact()
+    {
+        rb.AddForce(-Vector3.right * 100f, ForceMode.Impulse);
     }
 }
