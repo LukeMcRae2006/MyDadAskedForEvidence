@@ -11,14 +11,15 @@ public class PlayerLook : MonoBehaviour
     public float viewRadius;
     [Range(0, 360)]
     public float viewAngle;
-    public LayerMask targetMask;
+    public LayerMask creatureMask;
+    public LayerMask approachMask;
     public LayerMask obstructionMask;
 
     public bool playerCanSeeCreature;
 
     void FindVisibleTargets()
     {
-        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
+        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, creatureMask);
 
         for (int i = 0; i < targetsInViewRadius.Length; i++)
         {
@@ -45,6 +46,49 @@ public class PlayerLook : MonoBehaviour
 
     }
 
+    void FindVisibleApproaches()
+    {
+        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, approachMask);
+
+        for (int i = 0; i < targetsInViewRadius.Length; i++)
+        {
+            Transform target = targetsInViewRadius[i].transform;
+            IApproachable approach = target.gameObject.GetComponent<IApproachable>();
+            Vector3 dirToTarget = (target.position - transform.position).normalized;
+            if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
+            {
+                float distToTarget = Vector3.Distance(transform.position, target.position);
+                if (!Physics.Raycast(transform.position, dirToTarget, distToTarget, obstructionMask))
+                {
+                    // approach is visible
+                  
+                    if (approach != null)
+                    {
+                        approach.SetApproachDetection(true);
+                    }
+                    
+                    return;
+                }
+                
+
+            }
+
+            //approach is not visible
+           
+           
+            if (approach != null)
+            {
+                approach.SetApproachDetection(false);
+            }
+
+
+        }
+
+        
+
+
+    }
+
 
     public Vector3 directionFromAngle(float angleInDegrees, bool angleIsGlobal)
     {
@@ -64,6 +108,7 @@ public class PlayerLook : MonoBehaviour
     private void Update()
     {
         FindVisibleTargets();
+        FindVisibleApproaches();
         RoomManager.Instance.creatureIsBeingSeen = playerCanSeeCreature;
     }
 

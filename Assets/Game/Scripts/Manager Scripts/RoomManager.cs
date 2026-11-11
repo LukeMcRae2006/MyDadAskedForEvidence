@@ -4,11 +4,24 @@ using System.Collections.Generic;
 
 public class RoomManager : MonoBehaviour
 {
+    //is open bools
+    [Header("Open Approach Checks")]
     public bool isWindowOpen = false;
     public bool isClosetOpen = false;
     public bool isDoorOpen = false;
     public bool isVentOpen = false;
+  
+
+    //detection bools
+    [Header("Detection Checks")]
     public bool creatureIsBeingSeen = false;
+    public bool isWindowDetected = false;
+    public bool isClosetDetected = false;
+    public bool isDoorDetected = false;
+    public bool isVentDetected = false;
+
+    [Header("Game Over References")]
+    [SerializeField] private GameObject gameOverTimeline;
     
 
     public static RoomManager Instance { get; private set; }
@@ -32,5 +45,12 @@ public class RoomManager : MonoBehaviour
 
 
 
+    }
+
+
+    public void GameOver()
+    {
+        gameOverTimeline.SetActive(true);
+        PlayerController.Instance.gameObject.SetActive(false);
     }
 }

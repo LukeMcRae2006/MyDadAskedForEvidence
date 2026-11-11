@@ -27,6 +27,7 @@ public class PlayerInteraction : MonoBehaviour
 
     [Header("Animations")]
     [SerializeField] private Animator handAnim;
+    [SerializeField] private AudioSource doorAudio;
 
     public enum InteractionState
     {

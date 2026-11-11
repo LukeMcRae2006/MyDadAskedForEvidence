@@ -19,7 +19,7 @@ public class CreatureController : MonoBehaviour
     //reference to creatures last choice
     private CreatureState lastCreatureChoice = CreatureState.vent;
     [Header("Creature Thinking Attributes (Difficult Settings)")]
-    [SerializeField] private float firstThinkingDelaySetter, thinkingDelayRetreatSetter;
+    [SerializeField] private float firstThinkingDelaySetter, maxThinkingDelaySetter;
     [Range(0, 100)]
     [SerializeField] private int windowProb, closetProb, doorProb, ventProb; //probs will start based off of the sum of the previous prob(s)
     private float thinkingDelay = 0;
@@ -95,7 +95,7 @@ public class CreatureController : MonoBehaviour
         }
     }
 
-    #region Creature Approach
+    #region Creature Approach And Thinking
 
     void Thinking()
     {
@@ -241,7 +241,7 @@ public class CreatureController : MonoBehaviour
     {
         //creature is detected! Retreat!
         Retreat();
-        thinkingDelay = thinkingDelayRetreatSetter;
+        thinkingDelay = Random.Range(5f,maxThinkingDelaySetter); //thinking delay is random between max thinking delay and a base of 5 seconds
         creatureState = CreatureState.thinking;
 
     }
@@ -250,15 +250,19 @@ public class CreatureController : MonoBehaviour
 
     void Window()
     {
-       
-        if(RoomManager.Instance.isWindowOpen == false)
+        
+        if (didOpenCheck == false)//check to see if we already checked progress and if approach is being seen by player
         {
-            windowScript.Interact();
-            windowProgress = 1;
-        }
-        else
-        {
-            windowProgress = 2;
+            if (!RoomManager.Instance.isWindowOpen)
+            {
+                windowScript.Interact();
+                windowProgress = 1;
+            }
+            else
+            {
+                windowProgress = 2;
+            }
+            
         }
 
 
@@ -266,6 +270,7 @@ public class CreatureController : MonoBehaviour
         {
             windowProgress += 1;
         }
+
 
         //Window Progress
         if (windowProgress == 1)
@@ -279,21 +284,27 @@ public class CreatureController : MonoBehaviour
             CapturePlayer();
 
         }
+
+        didOpenCheck = true;
         
 
     }
 
     void Closet()
     {
-        if (RoomManager.Instance.isClosetOpen == false)
+        if (didOpenCheck == false )//check to see if we already checked progress and if approach is being seen by player
         {
-            closetScript.Interact();
-            closetProgress = 1;
+            if (RoomManager.Instance.isClosetOpen == false)
+            {
+                closetScript.Interact();
+                closetProgress = 1;
+
+            }
+            else
+            {
+                closetProgress = 2;
+            }
             
-        }
-        else
-        {
-            closetProgress = 2;
         }
 
         if (CanIncreaseApproach())
@@ -307,12 +318,19 @@ public class CreatureController : MonoBehaviour
             PlayAnimation("ANI_HauntCloset_1");
             transform.position = closetPositions[0].position;
         }
-        else
+        else if(closetProgress == 2)
         {
             PlayAnimation("ANI_HauntBed_1");
             transform.position = closetPositions[1].position;
+            
 
         }
+        else
+        {
+            CapturePlayer();
+        }
+
+            didOpenCheck = true;
 
         
 
@@ -322,15 +340,20 @@ public class CreatureController : MonoBehaviour
 
     void Door()
     {
-        
-        if (RoomManager.Instance.isDoorOpen == false)
+        if(didOpenCheck == false)//check to see if we already checked progress
+        { 
+        if (RoomManager.Instance.isDoorOpen == false) //check if approach is being seen by player and if door is open
         {
-            doorScript.Interact();
-            doorProgress = 1;
+                doorScript.Interact();
+                doorProgress = 1;
         }
-        else
+        else 
         {
-            doorProgress = 2;
+                    doorProgress = 2;
+                
+        }
+            
+
         }
 
 
@@ -346,13 +369,18 @@ public class CreatureController : MonoBehaviour
             PlayAnimation("ANI_HauntDoor_1");
             transform.position = doorPositions[0].position;
         }
-        else
+        else if(doorProgress == 2)  
         {
             PlayAnimation("ANI_HauntBed_1");
             transform.position = doorPositions[1].position;
             
 
+        }else
+        {
+            CapturePlayer();
         }
+
+        didOpenCheck = true;
 
        
     }
@@ -379,6 +407,8 @@ public class CreatureController : MonoBehaviour
         {
             CapturePlayer();
         }
+
+
     }
 
     void Retreat() //Retreat handles the approach logic when the creature is detected
@@ -386,13 +416,15 @@ public class CreatureController : MonoBehaviour
         
         PlayAnimation("ANI_Retreat");
         transform.position = thinkingPositions[0].position;
-        //reset vent progress
+        //reset approach progress since this can change any time and is dependent on player
         ventProgress = 1;
         windowProgress = 1;
         doorProgress = 1;
         closetProgress = 1;
         //reset approach delay
         approachDelay = approachDelaySetter;
+        //set did open check = false
+        didOpenCheck = false;
     }
 
    
@@ -400,8 +432,7 @@ public class CreatureController : MonoBehaviour
     bool CanIncreaseApproach()
     {
         //check if the creature is seen by player, if not increase approach
-        if (!RoomManager.Instance.creatureIsBeingSeen) //creature is not seen
-        {
+       
             if (approachDelay > 0)
             {
                 approachDelay -= Time.deltaTime;
@@ -409,11 +440,12 @@ public class CreatureController : MonoBehaviour
             }
             else
             {
-                return true;
                 approachDelay = approachDelaySetter;
+                return true;
+                
             }
-        }
-        return false;
+        
+      
         
 
     }
@@ -430,6 +462,7 @@ public class CreatureController : MonoBehaviour
     void CapturePlayer()
     {
         Debug.Log("JumpScare The Player");
+        RoomManager.Instance.GameOver();
     }
    
     /*Psuedo Code For Creature Controller
