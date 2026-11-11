@@ -31,10 +31,11 @@ public class CreatureController : MonoBehaviour
     [SerializeField] private VentScript ventScript;
     [SerializeField] private DoorScript doorScript;
     [SerializeField] private ClosetScript closetScript;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip hideUnderBedClip;
     
-
-
-
     //Instance
     public static CreatureController Instance;
 
@@ -49,6 +50,8 @@ public class CreatureController : MonoBehaviour
 
 
     }
+
+    #region Awake & Start
 
     void Awake()
     {
@@ -69,6 +72,9 @@ public class CreatureController : MonoBehaviour
         approachDelay = approachDelaySetter;
     }
 
+    #endregion
+
+    #region Update
     // Update is called once per frame
     void Update()
     {
@@ -94,6 +100,8 @@ public class CreatureController : MonoBehaviour
                 break;
         }
     }
+
+    #endregion
 
     #region Creature Approach And Thinking
 
@@ -321,8 +329,12 @@ public class CreatureController : MonoBehaviour
         else if(closetProgress == 2)
         {
             PlayAnimation("ANI_HauntBed_1");
-            transform.position = closetPositions[1].position;
-            
+            if (transform.position != closetPositions[1].position)
+            {
+                transform.position = closetPositions[1].position;
+                PlayAudio(hideUnderBedClip);
+            }
+
 
         }
         else
@@ -372,7 +384,12 @@ public class CreatureController : MonoBehaviour
         else if(doorProgress == 2)  
         {
             PlayAnimation("ANI_HauntBed_1");
-            transform.position = doorPositions[1].position;
+            if(transform.position != doorPositions[1].position)
+            {
+                transform.position = doorPositions[1].position;
+                PlayAudio(hideUnderBedClip);
+            }
+           
             
 
         }else
@@ -452,19 +469,31 @@ public class CreatureController : MonoBehaviour
 
     #endregion
 
+    #region Animation And Audio
+
     void PlayAnimation(string animName)
     {
         anim.Play(animName);
     }
 
 
+    void PlayAudio(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
+    }
+    #endregion
 
+    #region Capturing Player
     void CapturePlayer()
     {
         Debug.Log("JumpScare The Player");
         RoomManager.Instance.GameOver();
     }
-   
+
+    #endregion
+
+
+
     /*Psuedo Code For Creature Controller
      * Little note, I know it is not the best practice for puting psuedo code at the bottom of the actual code file however I am making this game in a short time and I want to kind of show this code off :D
      * 
