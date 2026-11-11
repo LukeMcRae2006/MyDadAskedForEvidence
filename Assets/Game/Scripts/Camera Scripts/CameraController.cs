@@ -21,6 +21,10 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float timeBtwPhotosSetter;
     [SerializeField] private CameraHitDetection cameraHitDetection;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip captureClip, uiClickClip;
+
 
     [Header("Editing Mode")]
     //actionUI is the UI to delete photos, editingUI is the UI to view photos in the editor
@@ -68,13 +72,17 @@ public class CameraController : MonoBehaviour
     #region Capturing Photos
     public IEnumerator TakePhoto()
     {
+        //play click clip
+        PlayAudio(uiClickClip);
         if(GetCurrentPhotoCount() >= 5 && timeBtwPhotos <= 0)
         {
             Debug.Log("Photo Limit Reached, please delete photos to take more");
             yield break; // Exit the coroutine if the photo limit is reached
           
         }
-
+        //play audio
+        PlayAudio(captureClip);
+        //trigger camera flash
         cameraFlash.SetActive(true);
         yield return new WaitForSeconds(0.25f); // Wait for the flash effect to be visible  
 
@@ -149,6 +157,8 @@ public class CameraController : MonoBehaviour
     #region Editing Mode    
     public void EnterEditMode()
     {
+        //play audio
+        PlayAudio(uiClickClip);
         if (cameraState == CameraState.Capture)
         {
             cameraState = CameraState.Editing;
@@ -275,18 +285,21 @@ public class CameraController : MonoBehaviour
         actionUI.SetActive(false);
         if (interactInput.action.WasPressedThisFrame())
         {
+            PlayAudio(uiClickClip);
             cameraState = CameraState.Deletion;
 
         }
 
         if(nextPhotoInput.action.WasPressedThisFrame())
         {
+            PlayAudio(uiClickClip);
             IncreaseCurrentPhotoIndex();
             GetPhotoToEdit();
         }
 
         if(prevPhotoInput.action.WasPressedThisFrame())
         {
+            PlayAudio(uiClickClip);
             DecreaseCurrentPhotoIndex();
             GetPhotoToEdit();
         }
@@ -301,11 +314,13 @@ public class CameraController : MonoBehaviour
         actionUI.SetActive(true);
         if (BackInput.action.WasPressedThisFrame())
         {
+            PlayAudio(uiClickClip);
             cameraState = CameraState.Editing;
 
         }
         if(interactInput.action.WasPressedThisFrame())
         {
+            PlayAudio(uiClickClip);
             //Delete the current photo
             if (photos != null && photos.Length > 0 && currentPhotoIndex < photos.Length)
             {
@@ -323,5 +338,12 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Audio
+    private void PlayAudio(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
+    }
     #endregion
 }
