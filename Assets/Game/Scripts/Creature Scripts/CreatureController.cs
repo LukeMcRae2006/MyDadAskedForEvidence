@@ -32,6 +32,12 @@ public class CreatureController : MonoBehaviour
     [SerializeField] private DoorScript doorScript;
     [SerializeField] private ClosetScript closetScript;
 
+    [Header("Creature Approach Timers")]
+
+
+    [Range(1f,15f)]
+    [SerializeField] private float windowApproachTimerSetter, closetApproachTimerSetter, doorApproachTimerSetter, ventApproachTimerSetter;
+    
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip hideUnderBedClip;
@@ -46,7 +52,8 @@ public class CreatureController : MonoBehaviour
         closet,
         door,
         vent,
-        retreat
+        retreat,
+        hourCompleted
 
 
     }
@@ -143,17 +150,17 @@ public class CreatureController : MonoBehaviour
             ChangeApproachProbability(0);
         }
 
-        int choice = Random.Range(0, 100);
+        int choice = Random.Range(0, 101);
         Debug.Log("creature Random Number Generated: " + choice);
-        if (choice <= windowProb)
+        if (choice < windowProb)
         {
             ChooseCreatureApproachChoice(CreatureState.window);
         }
-        else if(choice <= closetProb)
+        else if(choice < closetProb)
         {
             ChooseCreatureApproachChoice(CreatureState.closet);
         }
-        else if (choice <= doorProb)
+        else if (choice < doorProb)
         {
             ChooseCreatureApproachChoice(CreatureState.door);
         }
@@ -176,6 +183,21 @@ public class CreatureController : MonoBehaviour
         {
             creatureState = CreatureState.thinking;
             return;
+        }
+        switch(newState)
+        {
+            case (CreatureState.window):
+                approachDelay = windowApproachTimerSetter;
+                break;
+            case (CreatureState.closet):
+                approachDelay = closetApproachTimerSetter;
+                break;
+            case (CreatureState.door):
+                approachDelay = doorApproachTimerSetter;
+                break;
+            case (CreatureState.vent):
+                approachDelay = ventApproachTimerSetter;
+                break;
         }
         creatureState = newState;
         lastCreatureChoice = creatureState;
@@ -283,8 +305,14 @@ public class CreatureController : MonoBehaviour
         //Window Progress
         if (windowProgress == 1)
         {
-            PlayAnimation("ANI_HauntWindow_1");
-            transform.position = windowPositions[0].position;
+            if(transform.position != windowPositions[0].position)
+            {
+                transform.position = windowPositions[0].position;
+                //play random animation from 1-2
+                int randomIndex = Random.Range(1, 3);//maximum is exlcusive for integers
+                PlayAnimation("ANI_HauntWindow_" + randomIndex);
+            }
+            
         }
         else
         {
@@ -323,8 +351,16 @@ public class CreatureController : MonoBehaviour
 
         if (closetProgress == 1)
         {
-            PlayAnimation("ANI_HauntCloset_1");
-            transform.position = closetPositions[0].position;
+            
+            if(transform.position != closetPositions[0].position)
+            {
+                transform.position = closetPositions[0].position;
+                //play random animation from 1-2
+                int randomIndex = Random.Range(1, 3);//maximum is exlcusive for integers
+               
+                PlayAnimation("ANI_HauntCloset_"+randomIndex);
+            }
+            
         }
         else if(closetProgress == 2)
         {
@@ -378,8 +414,20 @@ public class CreatureController : MonoBehaviour
 
         if (doorProgress == 1)
         {
-            PlayAnimation("ANI_HauntDoor_1");
-            transform.position = doorPositions[0].position;
+            
+            if (transform.position != doorPositions[0].position)
+            {
+
+
+                transform.position = doorPositions[0].position;
+                //play random animation from 1-2
+                int randomIndex = Random.Range(1, 3);//maximum is exlcusive for integers
+
+                PlayAnimation("ANI_HauntDoor_"+randomIndex);
+
+            }
+
+
         }
         else if(doorProgress == 2)  
         {
@@ -486,8 +534,15 @@ public class CreatureController : MonoBehaviour
     #region Capturing Player
     void CapturePlayer()
     {
-        Debug.Log("JumpScare The Player");
-        RoomManager.Instance.GameOver();
+        if (SceneManager.Instance.hourCompleted == false)
+        {
+            Debug.Log("JumpScare The Player");
+            SceneManager.Instance.GameOver();
+        }
+        else
+        {
+            creatureState = CreatureState.hourCompleted;
+        }
     }
 
     #endregion

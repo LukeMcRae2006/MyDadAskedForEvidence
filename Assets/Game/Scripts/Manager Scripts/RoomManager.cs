@@ -20,8 +20,7 @@ public class RoomManager : MonoBehaviour
     public bool isDoorDetected = false;
     public bool isVentDetected = false;
 
-    [Header("Game Over References")]
-    [SerializeField] private GameObject gameOverTimeline;
+   
     
 
     public static RoomManager Instance { get; private set; }
@@ -48,9 +47,4 @@ public class RoomManager : MonoBehaviour
     }
 
 
-    public void GameOver()
-    {
-        gameOverTimeline.SetActive(true);
-        PlayerController.Instance.gameObject.SetActive(false);
-    }
 }

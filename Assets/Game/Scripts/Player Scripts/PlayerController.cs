@@ -53,7 +53,8 @@ public class PlayerController : MonoBehaviour
     {
         Resting,
         Active,
-        Editing
+        Editing,
+        GameOver
     }
 
 
@@ -73,7 +74,9 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.Editing:
                 Editing();
-                break;  
+                break;
+            case PlayerState.GameOver:
+                break;
         }
     }
 
@@ -90,6 +93,8 @@ public class PlayerController : MonoBehaviour
         HandleLook();
         HandleCamera();
     }
+
+   
 
     public void ChangePlayerState(PlayerState newState)
     {
