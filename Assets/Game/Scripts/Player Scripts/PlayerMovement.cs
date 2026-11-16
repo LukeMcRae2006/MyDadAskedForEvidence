@@ -11,6 +11,9 @@ public class PlayerMovement : MonoBehaviour
 
     private InputActionReference moveInput;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource walkingAudio;
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -20,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         controller.enabled = true;
+        walkingAudio.Stop();
     }
 
     private void OnDisable()
@@ -39,6 +43,20 @@ public class PlayerMovement : MonoBehaviour
 
         // Apply horizontal movement
         controller.Move(move * moveSpeed * Time.deltaTime);
+
+        //check if moving, if so loop audio
+        if(x != 0 || z != 0) //player is moving
+        {
+            if (walkingAudio.isPlaying == false)
+            {
+                walkingAudio.Play();
+            }
+            
+        }
+        else
+        { 
+            walkingAudio.Stop();
+        }
 
         // Apply gravity
         if (controller.isGrounded && velocity.y < 0f)

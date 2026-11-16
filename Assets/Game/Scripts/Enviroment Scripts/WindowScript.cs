@@ -15,6 +15,12 @@ public class WindowScript : MonoBehaviour, IInteractable, IApproachable
         audioSource.clip = isWindowOpen ? openAudioClip : closeAudioClip;
         audioSource.Play();
 
+        if(isWindowOpen == false && CreatureController.Instance.creatureState == CreatureController.CreatureState.window)
+        {
+            SceneManager.Instance.GameOver();
+        }
+        
+
     }
 
     public void SetApproachDetection(bool isDetected)
