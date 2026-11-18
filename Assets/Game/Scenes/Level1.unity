@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.20903048, g: 0.22111465, b: 0.24528301, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 0.4
+  m_AmbientIntensity: 1.4
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
@@ -529,7 +529,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-  field of view: 60.000004
+  field of view: 59.98734
   orthographic: 0
   orthographic size: 5
   m_Depth: 1
@@ -555,8 +555,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.024179341, y: 0.03426246, z: -0.033090875, w: 0.99857223}
-  m_LocalPosition: {x: 0.27019, y: 1.5476198, z: -8.40771}
+  m_LocalRotation: {x: 0, y: 0.119964875, z: 0, w: 0.9927781}
+  m_LocalPosition: {x: 0.37199974, y: 1.62, z: -7.8394966}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1657,7 +1657,7 @@ PlayableDirector:
   m_PlayableAsset: {fileID: 11400000, guid: 9692e5750cc8aad49865512db4293d9b, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
-  m_DirectorUpdateMode: 1
+  m_DirectorUpdateMode: 0
   m_InitialTime: 0
   m_SceneBindings:
   - key: {fileID: -4620895181602598210, guid: 9692e5750cc8aad49865512db4293d9b, type: 2}
@@ -1741,6 +1741,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1257265045}
   - component: {fileID: 1257265046}
+  - component: {fileID: 1257265047}
   m_Layer: 0
   m_Name: Scene Manager
   m_TagString: Untagged
@@ -1777,10 +1778,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SceneManager
   clock: {fileID: 3015048621054633728}
   hour: 3
-  inGameMinute: 45
+  inGameMinute: 30
   hourCompleted: 0
   victoryTimeline: {fileID: 1366537948}
   gameOverTimeline: {fileID: 691735212}
+--- !u!114 &1257265047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257265044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Timeline::UnityEngine.Timeline.SignalReceiver
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 0f5a3588e7be3ca459d8c63170445b74, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1257265046}
+          m_TargetAssemblyTypeName: SceneManager, Assembly-CSharp
+          m_MethodName: LoadMainMenu
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1267240570
 GameObject:
   m_ObjectHideFlags: 0
@@ -2042,7 +2073,7 @@ PlayableDirector:
   m_PlayableAsset: {fileID: 11400000, guid: 93309a7becd7f164181344d42ef700e4, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
-  m_DirectorUpdateMode: 1
+  m_DirectorUpdateMode: 0
   m_InitialTime: 0
   m_SceneBindings:
   - key: {fileID: 5560944887437222790, guid: 93309a7becd7f164181344d42ef700e4, type: 2}
@@ -2051,6 +2082,8 @@ PlayableDirector:
     value: {fileID: 2118002381}
   - key: {fileID: -9175657434483531305, guid: 93309a7becd7f164181344d42ef700e4, type: 2}
     value: {fileID: 126528832}
+  - key: {fileID: 458036890125841045, guid: 93309a7becd7f164181344d42ef700e4, type: 2}
+    value: {fileID: 1257265047}
   m_ExposedReferences:
     m_References: []
 --- !u!1 &1456696493
@@ -4563,10 +4596,6 @@ PrefabInstance:
     - target: {fileID: 4277182900980091818, guid: 86c20239fe8e590478399915d8c578b0, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 4277182900980091818, guid: 86c20239fe8e590478399915d8c578b0, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4601354282795632920, guid: 86c20239fe8e590478399915d8c578b0, type: 3}
       propertyPath: m_LocalPosition.x

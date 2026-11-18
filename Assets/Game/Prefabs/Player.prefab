@@ -1031,7 +1031,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 0}
+  m_Texture: {fileID: 2800000, guid: 7a92b59f90ff93d4b839f0baa30e7cd1, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -2506,8 +2506,11 @@ MonoBehaviour:
   cameraFlash: {fileID: 1640290812980722711}
   maxZoomLevel: 60
   minZoomLevel: 15
-  timeBtwPhotosSetter: 0
+  timeBtwPhotos: 0
+  timeBtwPhotosSetter: 2
   cameraHitDetection: {fileID: 2111281932012643122}
+  MaxPhotoStorage: 3
+  libraryEmptyTexture: {fileID: 2800000, guid: 7a92b59f90ff93d4b839f0baa30e7cd1, type: 3}
   audioSource: {fileID: 8083571379203260167}
   captureClip: {fileID: 8300000, guid: 6a410ca778c150f48ac0e19322bc5d71, type: 3}
   uiClickClip: {fileID: 8300000, guid: b185d13c515613643b57b22cb83ed5ab, type: 3}

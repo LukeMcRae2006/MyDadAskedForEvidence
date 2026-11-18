@@ -17,9 +17,14 @@ public class CameraController : MonoBehaviour
     [SerializeField] private GameObject cameraFlash;
     private float zoomLevel = 60f; // Default zoom level
     [SerializeField] private float maxZoomLevel, minZoomLevel;
-    private float timeBtwPhotos;
+    public float timeBtwPhotos;
     [SerializeField] private float timeBtwPhotosSetter;
     [SerializeField] private CameraHitDetection cameraHitDetection;
+    [SerializeField] private int MaxPhotoStorage;
+    //coroutine reference
+    private Coroutine takePhoto;
+    //libary empty photo placeholder
+    [SerializeField] private Texture libraryEmptyTexture;
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
@@ -42,7 +47,8 @@ public class CameraController : MonoBehaviour
     {
         Capture,
         Editing,
-        Deletion
+        Deletion,
+        Disabled
     }
 
     void Update()
@@ -67,19 +73,35 @@ public class CameraController : MonoBehaviour
         {
             timeBtwPhotos -= Time.deltaTime;
         }
+
+        if(SceneManager.Instance.hourCompleted == true)
+        {
+            cameraState = CameraState.Disabled;
+        }
     }
 
+    public void InitateTakePhoto()
+    {
+        if(takePhoto == null && timeBtwPhotos <= 0)
+        {
+            StartCoroutine(TakePhoto());
+        }
+    }
     #region Capturing Photos
     public IEnumerator TakePhoto()
     {
         //play click clip
         PlayAudio(uiClickClip);
-        if(GetCurrentPhotoCount() >= 5 && timeBtwPhotos <= 0)
+        if(GetCurrentPhotoCount() >= MaxPhotoStorage && timeBtwPhotos <= 0)
         {
             Debug.Log("Photo Limit Reached, please delete photos to take more");
             yield break; // Exit the coroutine if the photo limit is reached
           
         }
+
+        //set timer back to setter for photo delay
+        timeBtwPhotos = timeBtwPhotosSetter;
+
         //play audio
         PlayAudio(captureClip);
         //trigger camera flash
@@ -145,8 +167,6 @@ public class CameraController : MonoBehaviour
         // Destroy the texture after we're done using it
         Destroy(photo);
 
-        //set timer back to setter for photo delay
-        timeBtwPhotos = timeBtwPhotosSetter;
 
         Debug.Log("Photo saved to: " + path);
     }
@@ -210,7 +230,7 @@ public class CameraController : MonoBehaviour
         else
         {
             //Show That No Photos Exist
-            photoToEdit.texture = null;
+            photoToEdit.texture =libraryEmptyTexture;
             currentPhotoIndex = 0;
         }
         

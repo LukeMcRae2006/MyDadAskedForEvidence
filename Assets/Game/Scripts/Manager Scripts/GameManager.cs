@@ -59,10 +59,8 @@ public class GameManager : MonoBehaviour
 
     public void LoadMainMenu()
     {
-        if (loadToScene == null)
-        {
-            loadToScene = StartCoroutine(LoadToScene(0)); //main menu index is 0
-        }
+        
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 
     private IEnumerator LoadToScene(int index)

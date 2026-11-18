@@ -84,6 +84,15 @@ public class SceneManager : MonoBehaviour
         victoryTimeline.SetActive(true);
     }
 
+    public void LoadMainMenu()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.LoadMainMenu();
+        }
+       
+    }
+
 
     public void GameOver()
     {
