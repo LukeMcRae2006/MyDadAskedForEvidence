@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Creature
   - DoorLock
+  - Game Manager
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Ipod Volume
   - Creature
   - Approach
-  - 
+  - Game Manager
   - 
   - 
   - 

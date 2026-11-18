@@ -57,10 +57,12 @@ public class DoorScript : MonoBehaviour, IInteractable, IApproachable
 
     public void Interact()
     {
-       
-        rb.AddForce(-Vector3.right * 5f, ForceMode.Impulse);
-        isDoorOpen = true;
-        RoomManager.Instance.isDoorOpen = isDoorOpen;
+        if (isDoorOpen == false)
+        {
+            rb.AddForce(-Vector3.right * 5f, ForceMode.Impulse);
+            isDoorOpen = true;
+            RoomManager.Instance.isDoorOpen = isDoorOpen;
+        }
     }
 
     public void SetApproachDetection(bool isDetected)
