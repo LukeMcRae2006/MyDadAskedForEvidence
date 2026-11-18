@@ -9,6 +9,7 @@ public class DoorScript : MonoBehaviour, IInteractable, IApproachable
     [SerializeField] private Rigidbody rb;
     [SerializeField] private AudioSource audioSource;
     public float curVel = 0;
+    [SerializeField] private AudioSource lockAudio;
 
     private void FixedUpdate()
     {
@@ -29,8 +30,10 @@ public class DoorScript : MonoBehaviour, IInteractable, IApproachable
         {
             hinge.useMotor = false;
             isDoorOpen=true;
-            
+            lockAudio.Play();
+
         }
+        
         RoomManager.Instance.isDoorOpen = isDoorOpen;
 
        
@@ -55,7 +58,7 @@ public class DoorScript : MonoBehaviour, IInteractable, IApproachable
     public void Interact()
     {
        
-        rb.AddForce(-Vector3.right * 6f, ForceMode.Impulse);
+        rb.AddForce(-Vector3.right * 5f, ForceMode.Impulse);
         isDoorOpen = true;
         RoomManager.Instance.isDoorOpen = isDoorOpen;
     }
@@ -64,4 +67,6 @@ public class DoorScript : MonoBehaviour, IInteractable, IApproachable
     {
         RoomManager.Instance.isDoorDetected = isDetected;
     }
+
+  
 }

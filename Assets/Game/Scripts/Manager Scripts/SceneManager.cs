@@ -46,7 +46,7 @@ public class SceneManager : MonoBehaviour
 
     void SceneTime()
     {
-        Debug.Log("TimeCount: " + timeCount);
+      
         //The entire level you must survive 6 minutes
         if(timeCount < inGameMinute) //check if timeCount is less than an in game minute
         {

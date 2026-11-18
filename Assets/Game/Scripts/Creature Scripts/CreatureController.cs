@@ -19,7 +19,8 @@ public class CreatureController : MonoBehaviour
     //reference to creatures last choice
     private CreatureState lastCreatureChoice = CreatureState.vent;
     [Header("Creature Thinking Attributes (Difficult Settings)")]
-    [SerializeField] private float firstThinkingDelaySetter, maxThinkingDelaySetter;
+    [Tooltip("Max Thinking Delay Setter Sets Bed Approach Time")]
+    [SerializeField] private float firstThinkingDelaySetter, maxThinkingDelaySetter, minThinkingDelaySetter;
     [Range(0, 100)]
     [SerializeField] private int windowProb, closetProb, doorProb, ventProb; //probs will start based off of the sum of the previous prob(s)
     private float thinkingDelay = 0;
@@ -271,7 +272,7 @@ public class CreatureController : MonoBehaviour
     {
         //creature is detected! Retreat!
         Retreat();
-        thinkingDelay = Random.Range(5f,maxThinkingDelaySetter); //thinking delay is random between max thinking delay and a base of 5 seconds
+        thinkingDelay = Random.Range(minThinkingDelaySetter,maxThinkingDelaySetter); //thinking delay is random between max thinking delay and a base of 5 seconds
         creatureState = CreatureState.thinking;
 
     }
